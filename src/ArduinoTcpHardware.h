@@ -80,6 +80,10 @@ public:
     {
         return tcp_.read();
     }
+    if(tcp_.available())
+    {
+        return tcp_.read();
+    }
     else
     {
       tcp_.stop();
