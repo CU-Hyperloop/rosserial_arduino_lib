@@ -1,4 +1,8 @@
-# ROS Serial Arduino library
+# ROS Serial Arduino library - CU Hyperloop Edition!
+
+  This fork fixes some problems with TCP communication, since the Teensy 4.1 has native Ethernet hardware (rosserial_arduino assume you're using a shield).
+
+# ROS Serial Arduino library - Original
 
 ## Purpose
 
