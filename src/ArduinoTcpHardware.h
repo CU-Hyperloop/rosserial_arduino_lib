@@ -128,6 +128,22 @@ class NATIVE_hardware {
           delay(1000);
         }
     }
+  
+  void setConnection(IPAddress &server, int port = 11411)
+  {
+    server_ = server;
+    serverPort_ = port;
+  }
+
+  IPAddress getLocalIP()
+  {
+    #if defined(ESP8266) or defined(ESP32)
+      return tcp_.localIP();
+    #else
+      return Ethernet.localIP();
+    #endif
+  }
+
     
     int read() {
       if (client.available())
