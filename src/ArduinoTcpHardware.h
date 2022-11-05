@@ -122,14 +122,14 @@ class NATIVE_hardware {
     NATIVE_hardware() {};
     
     void init() {
-        while(!client.connect(server, serverPort))
+        while(!tcp_.connect(server_, serverPort_))
         {
           Serial.println("Attempting to connect [run serial_node on PC]...");
           delay(1000);
         }
     }
-  
-  void setConnection(IPAddress &server, int port = 11411)
+
+void setConnection(IPAddress &server, int port = 11411)
   {
     server_ = server;
     serverPort_ = port;
@@ -137,18 +137,18 @@ class NATIVE_hardware {
 
   IPAddress getLocalIP()
   {
-    #if defined(ESP8266) or defined(ESP32)
-      return tcp_.localIP();
-    #else
-      return Ethernet.localIP();
-    #endif
+#if defined(ESP8266) or defined(ESP32)
+    return tcp_.localIP();
+#else
+    return Ethernet.localIP();
+#endif
   }
 
     
     int read() {
-      if (client.available())
+      if (tcp_.available())
       {
-          int c = client.read();
+          int c = tcp_.read();
           return c;
       }
       return -1;
@@ -156,13 +156,22 @@ class NATIVE_hardware {
     
     void write(uint8_t* data, int length) {
           for (int i = 0; i < length; i++) {
-        client.write(data[i]);
+        tcp_.write(data[i]);
       }
     }
 
     unsigned long time() {
       return millis();
     }
+
+protected:
+#if defined(ESP8266) or defined(ESP32)
+  WiFiClient tcp_;
+#else
+  EthernetClient tcp_;
+#endif
+  IPAddress server_;
+  uint16_t serverPort_ = 11411;
 };
 
 #endif
